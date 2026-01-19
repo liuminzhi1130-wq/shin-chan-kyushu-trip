@@ -10,39 +10,42 @@
 body {
     font-family: 'Kosugi Maru', sans-serif;
     background-color: var(--bg-pattern);
-    /* 背景：改成讀取 JPG 檔案 */
+    /* 背景圖層設定：最下層是點點，中間是車車 */
     background-image: 
         url('car_bg.jpg'), 
         radial-gradient(var(--shin-green) 2px, transparent 2px);
-    background-size: 200px, 30px 30px;
+    background-size: 200px, 30px 30px; /* 調整車子圖案大小 */
     background-repeat: repeat, repeat;
     margin: 0;
     padding: 20px;
     color: var(--border-color);
-    overflow-x: hidden;
+    overflow-x: hidden; /* 防止左右滑動 */
+    min-height: 100vh;
 }
 
+/* 主要容器 (白底卡片) */
 .main-container {
     max-width: 600px;
     margin: 0 auto;
-    background: white;
+    background: white; /* 確保是實心白底，不會透出背景 */
     border: 4px solid var(--border-color);
     border-radius: 20px 25px 15px 30px;
     box-shadow: 8px 8px 0px var(--border-color);
     padding: 20px;
     position: relative;
-    z-index: 10;
+    z-index: 10; /* 確保內容浮在最上面 */
     overflow: hidden;
 }
 
-/* --- 背景飛機動畫 --- */
+/* --- 背景飛機動畫 (修復位置) --- */
 .bg-plane {
-    position: fixed;
-    top: 10%;
-    left: -150px;
+    position: fixed; /* 固定在螢幕，不隨捲動跑掉 */
+    top: 50px;       /* 距離頂部 50px，避開最上面 */
+    left: -150px;    /* 起始點在畫面左外側 */
     width: 120px;
-    opacity: 0.8;
-    z-index: 1;
+    opacity: 0.6;    /* 稍微透明一點，不要搶戲 */
+    z-index: 1;      /* 放在最底層 (比內容低) */
+    pointer-events: none; /* 讓滑鼠可以直接穿透它點擊 */
     animation: flyAcross 25s linear infinite;
 }
 
@@ -51,27 +54,72 @@ body {
     100% { transform: translateX(120vw) rotate(5deg); }
 }
 
-/* --- 標題與圖片區 --- */
-.shin-header { text-align: center; margin-bottom: 20px; }
-.shin-header h1 { font-size: 2.2rem; margin: 10px 0; text-shadow: 2px 2px 0px var(--shin-yellow); }
-.highlight { background: var(--shin-yellow); padding: 0 10px; border-radius: 10px; transform: rotate(-2deg); display: inline-block; border: 2px solid var(--border-color); }
-.badge { background: var(--shin-red); color: white; display: inline-block; padding: 5px 15px; border-radius: 50px; font-weight: bold; border: 3px solid var(--border-color); transform: rotate(-5deg); }
-.subtitle { font-size: 0.9rem; color: #666; font-style: italic; }
+/* --- 標題區修復 --- */
+.shin-header {
+    text-align: center;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 強制所有標題內容置中 */
+}
 
+.shin-header h1 {
+    font-size: 2.2rem;
+    margin: 10px 0;
+    text-shadow: 2px 2px 0px var(--shin-yellow);
+    line-height: 1.2;
+}
+
+/* 全家福照片容器 (修復置中) */
 .header-img-container {
     margin-top: 15px;
-    position: relative;
+    width: 100%;
+    display: flex;       /* 使用彈性盒子 */
+    justify-content: center; /* 水平置中 */
+    align-items: center;
 }
+
 .family-img {
     width: 90%;
-    max-width: 400px;
+    max-width: 380px; /* 限制最大寬度，避免照片太大 */
+    height: auto;
     border: 3px solid var(--border-color);
     border-radius: 15px;
     box-shadow: 5px 5px 0 var(--shin-blue);
-    transform: rotate(-1deg);
+    transform: rotate(-2deg); /* 微微傾斜 */
+    background: white; /* 圖片背景防破圖 */
 }
 
-/* --- 以下維持不變 --- */
+/* 標籤樣式 */
+.highlight {
+    background: var(--shin-yellow);
+    padding: 0 10px;
+    border-radius: 10px;
+    transform: rotate(-2deg);
+    display: inline-block;
+    border: 2px solid var(--border-color);
+}
+
+.badge {
+    background: var(--shin-red);
+    color: white;
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 50px;
+    font-weight: bold;
+    border: 3px solid var(--border-color);
+    transform: rotate(-5deg);
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    color: #666;
+    font-style: italic;
+    margin-top: 10px;
+}
+
+/* --- 其他功能區塊 (維持原樣，確保對齊) --- */
 .checklist-box {
     background: #fff;
     border: 3px solid var(--border-color);
@@ -119,21 +167,4 @@ body {
 .item-header { padding: 10px; display: flex; align-items: center; gap: 10px; }
 .item-details { display: none; border-top: 2px dashed #ddd; padding: 10px; background: #fdfdfd; border-radius: 0 0 8px 8px; animation: slideDown 0.3s ease-out; }
 .activity-item.open .item-details { display: block; }
-.activity-item.open { border-color: var(--shin-blue); background: #f0f8ff; }
-
-.detail-row { font-size: 0.9rem; margin: 5px 0; display: flex; align-items: center; gap: 5px; flex-wrap: wrap;}
-.detail-img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; border: 2px solid #eee; margin-bottom: 5px; }
-.mapcode-box { background: #eee; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-weight: bold; color: #333; }
-
-.tag { font-size: 0.8rem; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-color); font-weight: bold; min-width: 40px; text-align: center; }
-.tag.eat { background: var(--shin-red); color: white; }
-.tag.play { background: var(--shin-blue); color: white; }
-.tag.stay { background: var(--shin-yellow); color: black; }
-.info-footer { margin-top: 20px; display: grid; gap: 10px; }
-.logistics-box { background: #f9f9f9; border: 2px solid var(--border-color); padding: 10px; border-radius: 10px; }
-.warning { background: #fff0f0; border-color: var(--shin-red); color: var(--shin-red); }
-
-@keyframes spin { 100% { transform: rotate(360deg); } }
-@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-.wiggle { font-size: 3rem; animation: wiggle 1s infinite; display: inline-block;}
-@keyframes wiggle { 0%, 100% { transform: rotate(-10deg); } 50% { transform: rotate(10deg); } }
+.activity-item.open { border-color: var(--shin-blue); background: #f0f8
