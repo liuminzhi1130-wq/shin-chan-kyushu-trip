@@ -10,116 +10,33 @@
 body {
     font-family: 'Kosugi Maru', sans-serif;
     background-color: var(--bg-pattern);
-    /* 背景圖層設定：最下層是點點，中間是車車 */
-    background-image: 
-        url('car_bg.jpg'), 
-        radial-gradient(var(--shin-green) 2px, transparent 2px);
-    background-size: 200px, 30px 30px; /* 調整車子圖案大小 */
-    background-repeat: repeat, repeat;
+    /* 背景回到原本的綠色點點圖案，清爽不亂 */
+    background-image: radial-gradient(var(--shin-green) 2px, transparent 2px);
+    background-size: 30px 30px;
     margin: 0;
     padding: 20px;
     color: var(--border-color);
-    overflow-x: hidden; /* 防止左右滑動 */
-    min-height: 100vh;
 }
 
-/* 主要容器 (白底卡片) */
 .main-container {
     max-width: 600px;
     margin: 0 auto;
-    background: white; /* 確保是實心白底，不會透出背景 */
+    background: white;
     border: 4px solid var(--border-color);
     border-radius: 20px 25px 15px 30px;
     box-shadow: 8px 8px 0px var(--border-color);
     padding: 20px;
-    position: relative;
-    z-index: 10; /* 確保內容浮在最上面 */
     overflow: hidden;
 }
 
-/* --- 背景飛機動畫 (修復位置) --- */
-.bg-plane {
-    position: fixed; /* 固定在螢幕，不隨捲動跑掉 */
-    top: 50px;       /* 距離頂部 50px，避開最上面 */
-    left: -150px;    /* 起始點在畫面左外側 */
-    width: 120px;
-    opacity: 0.6;    /* 稍微透明一點，不要搶戲 */
-    z-index: 1;      /* 放在最底層 (比內容低) */
-    pointer-events: none; /* 讓滑鼠可以直接穿透它點擊 */
-    animation: flyAcross 25s linear infinite;
-}
+/* 標題區 */
+.shin-header { text-align: center; margin-bottom: 20px; }
+.shin-header h1 { font-size: 2.2rem; margin: 10px 0; text-shadow: 2px 2px 0px var(--shin-yellow); }
+.highlight { background: var(--shin-yellow); padding: 0 10px; border-radius: 10px; transform: rotate(-2deg); display: inline-block; border: 2px solid var(--border-color); }
+.badge { background: var(--shin-red); color: white; display: inline-block; padding: 5px 15px; border-radius: 50px; font-weight: bold; border: 3px solid var(--border-color); transform: rotate(-5deg); }
+.subtitle { font-size: 0.9rem; color: #666; font-style: italic; }
 
-@keyframes flyAcross {
-    0% { transform: translateX(0) rotate(5deg); }
-    100% { transform: translateX(120vw) rotate(5deg); }
-}
-
-/* --- 標題區修復 --- */
-.shin-header {
-    text-align: center;
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* 強制所有標題內容置中 */
-}
-
-.shin-header h1 {
-    font-size: 2.2rem;
-    margin: 10px 0;
-    text-shadow: 2px 2px 0px var(--shin-yellow);
-    line-height: 1.2;
-}
-
-/* 全家福照片容器 (修復置中) */
-.header-img-container {
-    margin-top: 15px;
-    width: 100%;
-    display: flex;       /* 使用彈性盒子 */
-    justify-content: center; /* 水平置中 */
-    align-items: center;
-}
-
-.family-img {
-    width: 90%;
-    max-width: 380px; /* 限制最大寬度，避免照片太大 */
-    height: auto;
-    border: 3px solid var(--border-color);
-    border-radius: 15px;
-    box-shadow: 5px 5px 0 var(--shin-blue);
-    transform: rotate(-2deg); /* 微微傾斜 */
-    background: white; /* 圖片背景防破圖 */
-}
-
-/* 標籤樣式 */
-.highlight {
-    background: var(--shin-yellow);
-    padding: 0 10px;
-    border-radius: 10px;
-    transform: rotate(-2deg);
-    display: inline-block;
-    border: 2px solid var(--border-color);
-}
-
-.badge {
-    background: var(--shin-red);
-    color: white;
-    display: inline-block;
-    padding: 5px 15px;
-    border-radius: 50px;
-    font-weight: bold;
-    border: 3px solid var(--border-color);
-    transform: rotate(-5deg);
-    margin-bottom: 10px;
-}
-
-.subtitle {
-    font-size: 0.9rem;
-    color: #666;
-    font-style: italic;
-    margin-top: 10px;
-}
-
-/* --- 其他功能區塊 (維持原樣，確保對齊) --- */
+/* 必備清單區塊 */
 .checklist-box {
     background: #fff;
     border: 3px solid var(--border-color);
@@ -133,6 +50,7 @@ body {
 .check-item { display: flex; align-items: center; gap: 8px; font-size: 0.95rem; cursor: pointer; }
 .check-item input { transform: scale(1.3); accent-color: var(--shin-blue); cursor: pointer; }
 
+/* 視覺區 */
 .visual-box {
     background: var(--shin-green);
     border: 3px solid var(--border-color);
@@ -147,13 +65,16 @@ body {
 }
 .visual-box::after { content: "⭐️"; position: absolute; top: -10px; right: -10px; font-size: 2rem; animation: spin 3s linear infinite; }
 
+/* 導航按鈕 */
 .day-nav { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 15px; scrollbar-width: none; }
 .day-btn { background: white; border: 3px solid var(--border-color); padding: 10px 15px; border-radius: 12px; white-space: nowrap; font-family: inherit; font-weight: bold; cursor: pointer; transition: transform 0.1s; flex-shrink: 0; box-shadow: 4px 4px 0px rgba(0,0,0,0.1); }
 .day-btn:active { transform: scale(0.95); }
 .day-btn.active { background: var(--shin-yellow); box-shadow: 4px 4px 0px var(--border-color); transform: translate(-2px, -2px); }
 
+/* 行程內容卡片 */
 .content-card { min-height: 300px; border: 3px dashed var(--border-color); border-radius: 15px; padding: 20px; background: #fff; }
 
+/* 行程項目 (可點擊) */
 .activity-item {
     background: #fff;
     border: 2px solid var(--border-color);
@@ -164,7 +85,41 @@ body {
 }
 .activity-item:hover { transform: translateY(-2px); box-shadow: 3px 3px 0px rgba(0,0,0,0.1); }
 
-.item-header { padding: 10px; display: flex; align-items: center; gap: 10px; }
-.item-details { display: none; border-top: 2px dashed #ddd; padding: 10px; background: #fdfdfd; border-radius: 0 0 8px 8px; animation: slideDown 0.3s ease-out; }
+.item-header {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 隱藏的詳細資訊 */
+.item-details {
+    display: none;
+    border-top: 2px dashed #ddd;
+    padding: 10px;
+    background: #fdfdfd;
+    border-radius: 0 0 8px 8px;
+    animation: slideDown 0.3s ease-out;
+}
 .activity-item.open .item-details { display: block; }
-.activity-item.open { border-color: var(--shin-blue); background: #f0f8
+.activity-item.open { border-color: var(--shin-blue); background: #f0f8ff; }
+
+/* 詳細資訊內容 */
+.detail-row { font-size: 0.9rem; margin: 5px 0; display: flex; align-items: center; gap: 5px; flex-wrap: wrap;}
+.detail-img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; border: 2px solid #eee; margin-bottom: 5px; }
+.mapcode-box { background: #eee; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-weight: bold; color: #333; }
+
+/* 標籤與底部 */
+.tag { font-size: 0.8rem; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-color); font-weight: bold; min-width: 40px; text-align: center; }
+.tag.eat { background: var(--shin-red); color: white; }
+.tag.play { background: var(--shin-blue); color: white; }
+.tag.stay { background: var(--shin-yellow); color: black; }
+.info-footer { margin-top: 20px; display: grid; gap: 10px; }
+.logistics-box { background: #f9f9f9; border: 2px solid var(--border-color); padding: 10px; border-radius: 10px; }
+.warning { background: #fff0f0; border-color: var(--shin-red); color: var(--shin-red); }
+
+/* 動畫 */
+@keyframes spin { 100% { transform: rotate(360deg); } }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+.wiggle { font-size: 3rem; animation: wiggle 1s infinite; display: inline-block;}
+@keyframes wiggle { 0%, 100% { transform: rotate(-10deg); } 50% { transform: rotate(10deg); } }
