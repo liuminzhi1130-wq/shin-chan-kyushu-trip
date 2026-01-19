@@ -11,7 +11,7 @@ const checklistData = [
     "牙刷/牙膏 (部分飯店環保不提供)"
 ];
 
-// 2. 行程資料 (全行程圖片版)
+// 2. 行程資料 (全行程圖片版 + 已修正 Day 5 檔名)
 const itineraryData = [
     {
         day: 1,
@@ -63,7 +63,6 @@ const itineraryData = [
         ]
     },
     {
-        {
         day: 5,
         date: "2/2 (Mon)",
         title: "天草：追逐野生海豚",
@@ -73,8 +72,6 @@ const itineraryData = [
             { type: "play", time: "11:30", text: "天草海鮮蔵 (海豚觀賞)", mapcode: "474 084 767*55", phone: "0969-52-7707", image: "amakusa.png" },
             { type: "eat", time: "午餐", text: "海鮮BBQ / 海鮮丼", mapcode: "-", phone: "-", image: "seafood.jpg" },
             { type: "play", time: "晚上", text: "熊本上下通商店街", mapcode: "29 460 385*22", phone: "-", image: "kumamoto_city.jpg" }
-        ]
-    },
         ]
     },
     {
@@ -191,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const hasDetails = act.mapcode || act.phone || act.image;
             const hintText = hasDetails ? '<span style="font-size:0.7em; color:#888; margin-left:5px;">(點擊展開)</span>' : '';
 
-            // 圖片區塊 (加入 onerror 處理：如果找不到圖片，就先隱藏)
+            // 圖片區塊 (加入 onerror 處理：如果找不到圖片，就先隱藏，不顯示破圖)
             const imgHtml = act.image ? `<img src="${act.image}" class="detail-img" alt="${act.text}" onerror="this.style.display='none'">` : '';
             
             // Mapcode & Phone 區塊
@@ -236,4 +233,3 @@ document.addEventListener('DOMContentLoaded', () => {
         return colors[Math.floor(Math.random() * colors.length)];
     }
 });
-
