@@ -63,15 +63,18 @@ const itineraryData = [
         ]
     },
     {
+        {
         day: 5,
         date: "2/2 (Mon)",
         title: "天草：追逐野生海豚",
         quote: "海豚～ 海豚～ 跟你一樣滑溜溜～",
         activities: [
             { type: "play", time: "上午", text: "前往天草 (車程約2小時)", mapcode: "-", phone: "-", image: "drive.jpg" },
-            { type: "play", time: "11:30", text: "天草海鮮蔵 (海豚觀賞)", mapcode: "474 084 767*55", phone: "0969-52-7707", image: "天草海鮮蔵.png" },
+            { type: "play", time: "11:30", text: "天草海鮮蔵 (海豚觀賞)", mapcode: "474 084 767*55", phone: "0969-52-7707", image: "amakusa.png" },
             { type: "eat", time: "午餐", text: "海鮮BBQ / 海鮮丼", mapcode: "-", phone: "-", image: "seafood.jpg" },
             { type: "play", time: "晚上", text: "熊本上下通商店街", mapcode: "29 460 385*22", phone: "-", image: "kumamoto_city.jpg" }
+        ]
+    },
         ]
     },
     {
@@ -233,3 +236,4 @@ document.addEventListener('DOMContentLoaded', () => {
         return colors[Math.floor(Math.random() * colors.length)];
     }
 });
+
