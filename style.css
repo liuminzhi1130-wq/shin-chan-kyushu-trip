@@ -10,11 +10,16 @@
 body {
     font-family: 'Kosugi Maru', sans-serif;
     background-color: var(--bg-pattern);
-    background-image: radial-gradient(var(--shin-green) 2px, transparent 2px);
-    background-size: 30px 30px;
+    /* 背景：改成讀取 JPG 檔案 */
+    background-image: 
+        url('car_bg.jpg'), 
+        radial-gradient(var(--shin-green) 2px, transparent 2px);
+    background-size: 200px, 30px 30px;
+    background-repeat: repeat, repeat;
     margin: 0;
     padding: 20px;
     color: var(--border-color);
+    overflow-x: hidden;
 }
 
 .main-container {
@@ -25,17 +30,48 @@ body {
     border-radius: 20px 25px 15px 30px;
     box-shadow: 8px 8px 0px var(--border-color);
     padding: 20px;
+    position: relative;
+    z-index: 10;
     overflow: hidden;
 }
 
-/* 標題與導航 */
+/* --- 背景飛機動畫 --- */
+.bg-plane {
+    position: fixed;
+    top: 10%;
+    left: -150px;
+    width: 120px;
+    opacity: 0.8;
+    z-index: 1;
+    animation: flyAcross 25s linear infinite;
+}
+
+@keyframes flyAcross {
+    0% { transform: translateX(0) rotate(5deg); }
+    100% { transform: translateX(120vw) rotate(5deg); }
+}
+
+/* --- 標題與圖片區 --- */
 .shin-header { text-align: center; margin-bottom: 20px; }
 .shin-header h1 { font-size: 2.2rem; margin: 10px 0; text-shadow: 2px 2px 0px var(--shin-yellow); }
 .highlight { background: var(--shin-yellow); padding: 0 10px; border-radius: 10px; transform: rotate(-2deg); display: inline-block; border: 2px solid var(--border-color); }
 .badge { background: var(--shin-red); color: white; display: inline-block; padding: 5px 15px; border-radius: 50px; font-weight: bold; border: 3px solid var(--border-color); transform: rotate(-5deg); }
 .subtitle { font-size: 0.9rem; color: #666; font-style: italic; }
 
-/* 必備清單區塊 (New) */
+.header-img-container {
+    margin-top: 15px;
+    position: relative;
+}
+.family-img {
+    width: 90%;
+    max-width: 400px;
+    border: 3px solid var(--border-color);
+    border-radius: 15px;
+    box-shadow: 5px 5px 0 var(--shin-blue);
+    transform: rotate(-1deg);
+}
+
+/* --- 以下維持不變 --- */
 .checklist-box {
     background: #fff;
     border: 3px solid var(--border-color);
@@ -49,7 +85,6 @@ body {
 .check-item { display: flex; align-items: center; gap: 8px; font-size: 0.95rem; cursor: pointer; }
 .check-item input { transform: scale(1.3); accent-color: var(--shin-blue); cursor: pointer; }
 
-/* 視覺區 */
 .visual-box {
     background: var(--shin-green);
     border: 3px solid var(--border-color);
@@ -64,52 +99,32 @@ body {
 }
 .visual-box::after { content: "⭐️"; position: absolute; top: -10px; right: -10px; font-size: 2rem; animation: spin 3s linear infinite; }
 
-/* 導航按鈕 */
 .day-nav { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 15px; scrollbar-width: none; }
 .day-btn { background: white; border: 3px solid var(--border-color); padding: 10px 15px; border-radius: 12px; white-space: nowrap; font-family: inherit; font-weight: bold; cursor: pointer; transition: transform 0.1s; flex-shrink: 0; box-shadow: 4px 4px 0px rgba(0,0,0,0.1); }
 .day-btn:active { transform: scale(0.95); }
 .day-btn.active { background: var(--shin-yellow); box-shadow: 4px 4px 0px var(--border-color); transform: translate(-2px, -2px); }
 
-/* 行程內容卡片 */
 .content-card { min-height: 300px; border: 3px dashed var(--border-color); border-radius: 15px; padding: 20px; background: #fff; }
 
-/* 行程項目 (可點擊) */
 .activity-item {
     background: #fff;
     border: 2px solid var(--border-color);
     margin-bottom: 10px;
     border-radius: 10px;
-    cursor: pointer; /* 讓鼠標變手手 */
+    cursor: pointer;
     transition: all 0.2s;
 }
 .activity-item:hover { transform: translateY(-2px); box-shadow: 3px 3px 0px rgba(0,0,0,0.1); }
 
-.item-header {
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-/* 隱藏的詳細資訊 (圖片/電話/Mapcode) */
-.item-details {
-    display: none; /* 預設隱藏 */
-    border-top: 2px dashed #ddd;
-    padding: 10px;
-    background: #fdfdfd;
-    border-radius: 0 0 8px 8px;
-    animation: slideDown 0.3s ease-out;
-}
-/* 當父層有 open class 時顯示 */
+.item-header { padding: 10px; display: flex; align-items: center; gap: 10px; }
+.item-details { display: none; border-top: 2px dashed #ddd; padding: 10px; background: #fdfdfd; border-radius: 0 0 8px 8px; animation: slideDown 0.3s ease-out; }
 .activity-item.open .item-details { display: block; }
 .activity-item.open { border-color: var(--shin-blue); background: #f0f8ff; }
 
-/* 詳細資訊內容樣式 */
-.detail-row { font-size: 0.9rem; margin: 5px 0; display: flex; align-items: center; gap: 5px; }
-.detail-img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; border: 2px solid #eee; margin-bottom: 5px; }
+.detail-row { font-size: 0.9rem; margin: 5px 0; display: flex; align-items: center; gap: 5px; flex-wrap: wrap;}
+.detail-img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; border: 2px solid #eee; margin-bottom: 5px; }
 .mapcode-box { background: #eee; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-weight: bold; color: #333; }
 
-/* 標籤與底部 */
 .tag { font-size: 0.8rem; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-color); font-weight: bold; min-width: 40px; text-align: center; }
 .tag.eat { background: var(--shin-red); color: white; }
 .tag.play { background: var(--shin-blue); color: white; }
@@ -118,7 +133,6 @@ body {
 .logistics-box { background: #f9f9f9; border: 2px solid var(--border-color); padding: 10px; border-radius: 10px; }
 .warning { background: #fff0f0; border-color: var(--shin-red); color: var(--shin-red); }
 
-/* 動畫 */
 @keyframes spin { 100% { transform: rotate(360deg); } }
 @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 .wiggle { font-size: 3rem; animation: wiggle 1s infinite; display: inline-block;}
