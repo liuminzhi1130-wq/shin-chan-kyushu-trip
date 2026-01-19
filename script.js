@@ -11,7 +11,7 @@ const checklistData = [
     "牙刷/牙膏 (部分飯店環保不提供)"
 ];
 
-// 2. 行程資料 (全行程圖片版 + 已修正 Day 5 檔名)
+// 2. 行程資料
 const itineraryData = [
     {
         day: 1,
@@ -69,7 +69,7 @@ const itineraryData = [
         quote: "海豚～ 海豚～ 跟你一樣滑溜溜～",
         activities: [
             { type: "play", time: "上午", text: "前往天草 (車程約2小時)", mapcode: "-", phone: "-", image: "drive.jpg" },
-            { type: "play", time: "11:30", text: "天草海鮮蔵 (海豚觀賞)", mapcode: "474 084 767*55", phone: "0969-52-7707", image: "amakusa.png" },
+            { type: "play", time: "11:30", text: "天草海鮮蔵 (海豚觀賞)", mapcode: "474 084 767*55", phone: "0969-52-7707", image: "amakusa.png" }, /* 維持 PNG */
             { type: "eat", time: "午餐", text: "海鮮BBQ / 海鮮丼", mapcode: "-", phone: "-", image: "seafood.jpg" },
             { type: "play", time: "晚上", text: "熊本上下通商店街", mapcode: "29 460 385*22", phone: "-", image: "kumamoto_city.jpg" }
         ]
@@ -119,42 +119,33 @@ const itineraryData = [
     }
 ];
 
-// 初始化程式
+// 初始化
 document.addEventListener('DOMContentLoaded', () => {
     const navContainer = document.getElementById('day-nav');
     const displayContainer = document.getElementById('itinerary-display');
     const quoteBox = document.getElementById('daily-quote');
     const checklistContainer = document.getElementById('checklist-container');
 
-    // --- 1. 初始化必備清單 ---
     checklistData.forEach((itemText, index) => {
         const wrapper = document.createElement('div');
         wrapper.className = 'check-item';
-        
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.id = `check-${index}`;
-        
-        // 讀取 localStorage 狀態
         if (localStorage.getItem(`check-${index}`) === 'true') {
             checkbox.checked = true;
         }
-
-        // 監聽勾選事件
         checkbox.addEventListener('change', (e) => {
             localStorage.setItem(`check-${index}`, e.target.checked);
         });
-
         const label = document.createElement('label');
         label.htmlFor = `check-${index}`;
         label.innerText = itemText;
-
         wrapper.appendChild(checkbox);
         wrapper.appendChild(label);
         checklistContainer.appendChild(wrapper);
     });
 
-    // --- 2. 建立日期導航按鈕 ---
     itineraryData.forEach((item, index) => {
         const btn = document.createElement('button');
         btn.className = 'day-btn';
@@ -163,19 +154,13 @@ document.addEventListener('DOMContentLoaded', () => {
         navContainer.appendChild(btn);
     });
 
-    // --- 3. 載入特定天數的函式 ---
     function loadDay(index) {
         const data = itineraryData[index];
-        
-        // 更新按鈕狀態
         document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
         document.querySelectorAll('.day-btn')[index].classList.add('active');
-
-        // 更新語錄
         quoteBox.innerText = `小新說：「${data.quote}」`;
         quoteBox.style.backgroundColor = getRandomColor();
 
-        // 生成行程 HTML
         let html = `
             <h2 style="margin-top:0">${data.title}</h2>
             <div class="activity-list">
@@ -183,15 +168,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         data.activities.forEach(act => {
             const icon = getIcon(act.type);
-            
-            // 判斷詳細資訊
             const hasDetails = act.mapcode || act.phone || act.image;
             const hintText = hasDetails ? '<span style="font-size:0.7em; color:#888; margin-left:5px;">(點擊展開)</span>' : '';
-
-            // 圖片區塊 (加入 onerror 處理：如果找不到圖片，就先隱藏，不顯示破圖)
             const imgHtml = act.image ? `<img src="${act.image}" class="detail-img" alt="${act.text}" onerror="this.style.display='none'">` : '';
-            
-            // Mapcode & Phone 區塊
             const mapcodeHtml = act.mapcode && act.mapcode !== '-' ? `<div class="detail-row">📍 MapCode: <span class="mapcode-box">${act.mapcode}</span></div>` : '';
             const phoneHtml = act.phone ? `<div class="detail-row">📞 電話: <a href="tel:${act.phone}">${act.phone}</a></div>` : '';
 
@@ -213,14 +192,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         html += `</div>`;
-        
-        // 渲染畫面
         displayContainer.innerHTML = html;
         displayContainer.style.opacity = 0;
         setTimeout(() => displayContainer.style.opacity = 1, 50);
     }
 
-    // 輔助函式
     function getIcon(type) {
         if (type === 'eat') return '🍱';
         if (type === 'play') return '📸';
